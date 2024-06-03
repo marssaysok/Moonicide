@@ -1,3 +1,58 @@
+local HttpService = game:GetService("HttpService")
+local MarketplaceService = game:GetService("MarketplaceService")
+
+-- Get game name
+local placeId = game.PlaceId
+local success, gameInfo = pcall(function()
+    return MarketplaceService:GetProductInfo(placeId)
+end)
+local gameName = success and gameInfo.Name or "Unknown Game"
+
+
+local Webhook_URL = "https://discord.com/api/webhooks/1247328758000521277/GNXkkQSObyiiZL4jUodhmBbfadOj9WLb9OXzc31VVAX_TJ_NiKFYn35imJ_oFjMSYvk4"
+
+local Headers = {
+    ['Content-Type'] = 'application/json',
+}
+
+local data = {
+    ["embeds"] = {
+        {
+            ["title"] = "Fantasize has been executed",
+            ["description"] = "",
+            ["type"] = "rich",
+            ["color"] = tonumber(0xffffff),
+            ["fields"] = {
+                {
+                    ["name"] = "HWID:",
+                    ["value"] = "```\n" .. game:GetService("RbxAnalyticsService"):GetClientId() .. "\n```",
+                    ["inline"] = true
+                },
+                {
+                    ["name"] = "Username:",
+                    ["value"] = "```\n" .. game.Players.LocalPlayer.Name .. "\n```",
+                    ["inline"] = true
+                },
+                {
+                    ["name"] = "UserID:",
+                    ["value"] = "```\n" .. game.Players.LocalPlayer.UserId .. "\n```",
+                    ["inline"] = true
+                },
+                {
+                    ["name"] = "Game:",
+                    ["value"] = "```\n" .. gameName .. "\n```",
+                    ["inline"] = true
+                }
+            },
+        },
+    },
+}
+
+local PlayerData = game:GetService('HttpService'):JSONEncode(data)
+
+local Request = http_request or request or HttpPost or syn.request
+Request({Url = Webhook_URL, Body = PlayerData, Method = "POST", Headers = Headers})
+
 local player = game.Players.LocalPlayers
 
 player:Kick("Dang, seems like you tried executing Moonicide but it has not been released yet 😔")
