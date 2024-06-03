@@ -1,0 +1,3 @@
+local player = game.Players.LocalPlayers
+
+player:Kick("Dang, seems like you tried executing Moonicide but it has not been released yet :(")
